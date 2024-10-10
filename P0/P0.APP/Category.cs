@@ -1,6 +1,5 @@
-//using System.Collections.Generic;
-
 public class Category{
+
     public string? Title {get; set; }
     public List<string>? Options {get; set; }
 
@@ -10,5 +9,9 @@ public class Category{
     }
 
     public void PrintCategory(){
+        Console.WriteLine("\n---" + Title + "---");
+        foreach(var option in Options){
+            Console.WriteLine(option);
+        };
     }
 }
