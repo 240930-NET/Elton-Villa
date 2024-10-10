@@ -11,6 +11,7 @@ class Program
             switch(selection){
                 case 1:
                     //Play M.A.S.H.
+                    Controller.PlayGame();
                     break;
                 case 2:
                     //Add game
@@ -28,5 +29,6 @@ class Program
             }
             selection = UI.MenuSelection();
         }
+        Console.WriteLine("Goodbye!");
     }
 }

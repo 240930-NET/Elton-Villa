@@ -21,5 +21,17 @@ public class Game{
         foreach(var category in Categories){
             Console.WriteLine("Your " + category.Title + " will be " + category.Options[0] + ".");
         };
+        Console.WriteLine();
+    }
+
+    public bool isGameMashable(){
+        foreach(var category in Categories){
+            //If any category has more than one option, you can play MASH with this game
+            if(category.Options.Count > 1){
+                return true;
+            }
+        }
+
+        return false;
     }
 }
