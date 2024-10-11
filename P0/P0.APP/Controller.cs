@@ -84,7 +84,8 @@ public static class Controller{
         }
         else{
             Console.WriteLine("Let's play M.A.S.H.!\n");
-            Console.WriteLine("Please enter a magic number between 3 and 10 to play.");
+            games[index].PrintGame();
+            Console.WriteLine("\nPlease enter a magic number between 3 and 10 to play.");
 
             int steps = 0;
             string? input = Console.ReadLine();
