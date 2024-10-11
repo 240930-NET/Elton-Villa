@@ -3,8 +3,20 @@ using System.Text.Json;
 public static class Controller{
     const string FILE_PATH = "games.txt";
 
+    public static void ViewStoredGames(string action){
+        string dataFromFile = FileReader.ReadFile(FILE_PATH);
+        List<Game>? games = JsonSerializer.Deserialize<List<Game>>(dataFromFile);
+        Console.WriteLine("Games available to " + action +":");
+        foreach(var game in games){
+            Console.WriteLine("-" + game.Name);
+        }
+    }
+
     public static void CreateGame(){
-        Game createdGame = UI.GetUserGame();
+        Game? createdGame = UI.GetUserGame();
+        if(createdGame == null){
+            return;
+        }
 
         string dataFromFile = FileReader.ReadFile(FILE_PATH);
         List<Game>? games = JsonSerializer.Deserialize<List<Game>>(dataFromFile);
@@ -20,11 +32,16 @@ public static class Controller{
         string dataFromFile = FileReader.ReadFile(FILE_PATH);
         List<Game>? games = JsonSerializer.Deserialize<List<Game>>(dataFromFile);
 
+        ViewStoredGames("delete");
+
         Console.WriteLine("Please enter the name of the game(s) you would like to delete.\n");
         string? gameToDelete = Console.ReadLine();
         int removed = games.RemoveAll(game => game.Name == gameToDelete);
         if(removed == 0){
             Console.WriteLine("No games were found with that name. No game was deleted.\n");
+        }
+        else{
+            Console.WriteLine("Game \"" + gameToDelete + "\" was deleted.");
         }
 
         string jsonString = JsonSerializer.Serialize(games);
@@ -34,6 +51,8 @@ public static class Controller{
     public static void EditGame(){
         string dataFromFile = FileReader.ReadFile(FILE_PATH);
         List<Game>? games = JsonSerializer.Deserialize<List<Game>>(dataFromFile);
+
+        ViewStoredGames("edit");
 
         Console.WriteLine("Please enter the name of the game you would like to edit.\n");
         string? gameToEdit = Console.ReadLine();
@@ -54,10 +73,8 @@ public static class Controller{
         //Pick game from file
         string dataFromFile = FileReader.ReadFile(FILE_PATH);
         List<Game>? games = JsonSerializer.Deserialize<List<Game>>(dataFromFile);
-        Console.WriteLine("Games available to play:");
-        foreach(var game in games){
-            Console.WriteLine("-" + game.Name);
-        }
+        
+        ViewStoredGames("play");
 
         Console.WriteLine("Please enter the name of the game you would like to play.\n");
         string? gameToPlay = Console.ReadLine();
@@ -67,8 +84,20 @@ public static class Controller{
         }
         else{
             Console.WriteLine("Let's play M.A.S.H.!\n");
-            Console.WriteLine("Please enter a magic number between 3-10 to play.");
-            int steps = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Please enter a magic number between 3 and 10 to play.");
+
+            int steps = 0;
+            string? input = Console.ReadLine();
+            bool isInt = int.TryParse(input, out steps); //TryParse returns false if conversion to int fails
+
+            while(isInt == false || 3  > steps || steps > 10){
+                if(isInt == false){
+                    Console.Write("You did not enter a number. ");
+                }
+                Console.WriteLine($"Please enter a valid number between 3 and 10.");
+                input = Console.ReadLine(); 
+                isInt = int.TryParse(input, out steps);
+            }
 
             MASHAlgorithm(games[index], steps);
         }

@@ -1,5 +1,6 @@
 public static class UI{
     const int NUM_MENU_OPTIONS = 5;
+    const int MAX_NUM_CATEGORIES = 10;
 
     public static void Greetings(){
         Console.WriteLine("\nWelcome! Let's play a game of M.A.S.H.!");
@@ -41,6 +42,10 @@ public static class UI{
         Console.WriteLine("e.g. Doctor, Lawyer, Clown\n");
 
         string[] userOptions = Console.ReadLine().Split(", ");
+        while(userOptions.Length == 1 && userOptions[0] == ""){
+            Console.WriteLine("Options cannot be empty.\n");
+            userOptions = Console.ReadLine().Split(", ");
+        }
         List<string> listOptions = [.. userOptions];
         return listOptions;
     }
@@ -49,24 +54,48 @@ public static class UI{
         Console.WriteLine("\nPlease enter the title of this category!");
         Console.WriteLine("e.g. Job, Car, Number of Kids\n");
         string? title = Console.ReadLine();
+
+        while(title == ""){
+            Console.WriteLine("Title cannot be empty.\n");
+            title = Console.ReadLine();
+        }
+
         List<string>? options = GetUserCategoryOptions();
         
         Category userCategory = new Category(title, options);
         return userCategory;
     }
 
-    public static Game GetUserGame(){
+    public static Game? GetUserGame(){
         Console.WriteLine("\nPlease enter the name of this game!\n");
         string? name = Console.ReadLine();
 
+        while(name == ""){
+            Console.WriteLine("Name cannot be empty.\n");
+            return null;
+        }
+
         Console.WriteLine("\nHow many categories would you like to add?\n");
-        int numberOfCategories = Convert.ToInt32(Console.ReadLine());
+        string? numberOfCategories = Console.ReadLine();
+
+        int i = 0;
+        bool isInt = int.TryParse(numberOfCategories, out i); //TryParse returns false and sets i to 0 if conversion to int fails
+
+        while(isInt == false || 1 > i || i > MAX_NUM_CATEGORIES){
+            if(isInt == false){
+                Console.Write("You did not enter a number. ");
+            }
+            Console.WriteLine($"Please enter a valid number between 1 and {MAX_NUM_CATEGORIES}.");
+            numberOfCategories = Console.ReadLine(); 
+            isInt = int.TryParse(numberOfCategories, out i);
+        }
+
         List<Category>? categories = new List<Category>();
 
-        while(numberOfCategories > 0){
+        while(i > 0){
             Category temp = UI.GetUserCategory();
             categories.Add(temp);
-            numberOfCategories -= 1;
+            i -= 1;
         }
 
         Game userGame = new Game(name, categories);
