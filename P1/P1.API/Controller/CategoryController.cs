@@ -25,11 +25,11 @@ public class CategoryController : ControllerBase
         }
     }
 
-    [HttpGet("GetCategory/{categoryid}")]
-    public IActionResult GetCategoryById(int categoryid)
+    [HttpGet("GetCategory/{id}")]
+    public IActionResult GetCategoryById(int id)
     {
         try{
-            var category = _categoryService.GetCategoryById(categoryid);
+            var category = _categoryService.GetCategoryById(id);
             return Ok(category);
         }
         catch(Exception e){
