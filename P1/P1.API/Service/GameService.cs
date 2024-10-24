@@ -1,5 +1,6 @@
 using P1.API.Migrations;
 using P1.API.Model;
+using P1.API.Model.DTO;
 using P1.API.Repository;
 
 namespace P1.API.Service;
@@ -10,7 +11,7 @@ public class GameService : IGameService
 
     public GameService(IGameRepository gameRepository) => _gameRepository = gameRepository;
 
-    public IEnumerable<Game> GetAllGames()
+    public List<Game> GetAllGames()
     {
         return _gameRepository.GetAllGames();
     }
@@ -20,8 +21,14 @@ public class GameService : IGameService
         return _gameRepository.GetGameByName(name);
     }
 
-    public void AddGame(Game game)
+    public void AddGame(NewGameDTO gameDTO)
     {
+        if(gameDTO.Name == "" || gameDTO.Name == null){
+            throw new Exception("Game cannot be added due to missing name.");
+        }
+        Game game = new Game ();
+        game.Name = gameDTO.Name;
+
         _gameRepository.AddGame(game);
     }
 

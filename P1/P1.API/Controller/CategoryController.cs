@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using P1.API.Model;
+using P1.API.Model.DTO;
 using P1.API.Service;
 
 namespace P1.API.Controller;
@@ -15,19 +16,48 @@ public class CategoryController : ControllerBase
     [HttpGet("GetCategories")]
     public IActionResult GetAllCategories()
     {
-        var categories = _categoryService.GetAllCategories();
-        return Ok(categories);
+        try{
+            var categories = _categoryService.GetAllCategories();
+            return Ok(categories);
+        }
+        catch(Exception e){
+            return BadRequest("Could not get all categories: " + e.Message);
+        }
     }
 
-    [HttpPost("AddCategory")]
-    public IActionResult AddCategory([FromBody] Category category){
-
+    [HttpGet("GetCategory/{categoryid}")]
+    public IActionResult GetCategoryById(int categoryid)
+    {
         try{
-            _categoryService.AddCategory(category);
+            var category = _categoryService.GetCategoryById(categoryid);
             return Ok(category);
         }
         catch(Exception e){
+            return BadRequest("Could not get category: " + e.Message);
+        }
+
+    }
+
+    [HttpPost("AddCategory/{gameid}")]
+    public IActionResult AddCategory([FromBody] NewCategoryDTO categoryDTO, int gameid){
+
+        try{
+            _categoryService.AddCategory(categoryDTO, gameid);
+            return Ok("Category added.");
+        }
+        catch(Exception e){
             return BadRequest("Could not add category: " + e.Message);
+        }
+    }
+
+    [HttpDelete("DeleteCategory/{id}")]
+    public IActionResult DeleteCategoryById(int id){
+        try{
+            _categoryService.DeleteCategoryById(id);
+            return Ok("Category deleted.");
+        }
+        catch(Exception e){
+            return BadRequest("Could not delete category: " + e.Message);
         }
     }
 }

@@ -1,11 +1,12 @@
 using P1.API.Model;
+using P1.API.Model.DTO;
 
 namespace P1.API.Service;
 
 public interface IGameService
 {
-    public IEnumerable<Game> GetAllGames();
+    public List<Game> GetAllGames();
     public Game GetGameByName(string name);
-    public void AddGame(Game game);
+    public void AddGame(NewGameDTO gameDTO);
     public void DeleteGameByName(string name);
 }

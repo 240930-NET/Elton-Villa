@@ -9,12 +9,23 @@ public class CategoryRepository : ICategoryRepository
 
     public CategoryRepository(MASHContext mashContext) => _mashContext = mashContext;
 
-    public IEnumerable<Category> GetAllCategories()
+    public List<Category> GetAllCategories()
     {
         return _mashContext.Categories.ToList();
     }
 
+    public Category GetCategoryById(int id)
+    {
+        return _mashContext.Categories.Find(id);
+    }
+
     public void AddCategory(Category category){
         _mashContext.Categories.Add(category);
+        _mashContext.SaveChanges();
+    }
+
+    public void DeleteCategory(Category category){
+        _mashContext.Categories.Remove(category);
+        _mashContext.SaveChanges();
     }
 }

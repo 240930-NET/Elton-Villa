@@ -7,7 +7,7 @@ public class Category{
     public List<string> Options {get; set; } = [];
 
     public int GameId {get; set; }
-    public required Game Game {get; set; }
+    public Game Game {get; set; }
 
     public void PrintCategory(){
         Console.WriteLine("\n---" + Title + "---");

@@ -9,7 +9,7 @@ public class GameRepository : IGameRepository
 
     public GameRepository(MASHContext mashContext) => _mashContext = mashContext;
 
-    public IEnumerable<Game> GetAllGames()
+    public List<Game> GetAllGames()
     {
         return _mashContext.Games.ToList();
     }

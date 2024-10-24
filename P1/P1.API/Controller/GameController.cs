@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using P1.API.Model;
+using P1.API.Model.DTO;
 using P1.API.Service;
 
 namespace P1.API.Controller;
@@ -30,11 +31,11 @@ public class GameController : ControllerBase
     }
 
     [HttpPost("AddGame")]
-    public IActionResult AddGame([FromBody] Game game){
+    public IActionResult AddGame([FromBody] NewGameDTO gameDTO){
 
         try{
-            _gameService.AddGame(game);
-            return Ok(game);
+            _gameService.AddGame(gameDTO);
+            return Ok("Game added.");
         }
         catch(Exception e){
             return BadRequest("Could not add game: " + e.Message);
